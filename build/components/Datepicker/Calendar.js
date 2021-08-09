@@ -73,10 +73,10 @@ var useStyles = (0, _core.makeStyles)(function (theme) {
     },
     infoIcon: {
       color: '#2196f3',
-      fontSize: '17px'
+      fontSize: '14px'
     },
     infoTxt: {
-      fontSize: '18px'
+      fontSize: '16px'
     }
   };
 });

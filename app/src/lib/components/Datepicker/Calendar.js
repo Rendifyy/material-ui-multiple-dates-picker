@@ -41,10 +41,10 @@ const useStyles = makeStyles(theme => ({
   },
   infoIcon: {
     color: '#2196f3',
-    fontSize: '17px'
+    fontSize: '14px'
   },
   infoTxt: {
-    fontSize: '18px'
+    fontSize: '16px'
   }
 }))
 
