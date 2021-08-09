@@ -56,7 +56,7 @@ const DatePicker = ({
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
   // Kui aga valitud päev on halfDisabledDate - siis näitame algus kella hoopis selle järgi
   const [timesInternal, setTimesInternal] = useState(times || [])
-  const [noticeTxt, setNoticeTxt] = useState('')
+  const [noticeTxt, setNoticeTxt] = useState(chooseMulti ? 'Vali kõik päevad koos algus- ja lõppkuupäevaga': '') // Evar tahtis et default msg oleks see.
   const [outterChosenStartTs, setChosenOuterStartTs] = React.useState(null);
   const [outterChosenEndTs, setChosenOuterEndTs] = React.useState(null);
 
@@ -186,7 +186,7 @@ const DatePicker = ({
 
       /* validation 1 */
       if (chooseMulti && (selectedDates.length === 0 || selectedDates.length === 1)) {
-        setNoticeTxt("Vali alguse- ja lõpukuupäev");
+        setNoticeTxt("Vali kõik päevad koos algus- ja lõppkuupäevaga");
         return reset();
       }
 
