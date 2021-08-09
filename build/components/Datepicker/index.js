@@ -106,10 +106,11 @@ var DatePicker = function DatePicker(_ref) {
       timesInternal = _useState2[0],
       setTimesInternal = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(''),
+  var _useState3 = (0, _react.useState)(chooseMulti ? 'Vali kõik päevad koos algus- ja lõppkuupäevaga' : ''),
       _useState4 = _slicedToArray(_useState3, 2),
       noticeTxt = _useState4[0],
-      setNoticeTxt = _useState4[1];
+      setNoticeTxt = _useState4[1]; // Evar tahtis et default msg oleks see.
+
 
   var _React$useState = _react["default"].useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -246,7 +247,7 @@ var DatePicker = function DatePicker(_ref) {
 
 
     if (chooseMulti && (selectedDates.length === 0 || selectedDates.length === 1)) {
-      setNoticeTxt("Vali alguse- ja lõpukuupäev");
+      setNoticeTxt("Vali kõik päevad koos algus- ja lõppkuupäevaga");
       return reset();
     }
     /* validation 2 */
