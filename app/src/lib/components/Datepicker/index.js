@@ -9,8 +9,8 @@ import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   dialogPaper: {
-    minHeight: 600,
-    maxHeight: 600,
+    minHeight: 660,
+    maxHeight: 660,
     display: 'flex',
     [theme.breakpoints.down('xs')]: {
       margin: `${theme.spacing(1)}px`,
