@@ -237,7 +237,23 @@ var DatePicker = function DatePicker(_ref) {
       }, 3000);
     };
 
-    if (selectedDates.find(function (e) {
+    if (!outterChosenStartTs || !outterChosenEndTs) {
+      setNoticeTxt("Kellaajad valimata.");
+      return reset();
+    } // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
+    // ja võrdleme praeguse hetkega. Kui praegune hetk on pärast algusaega, siis on järelikult minevik.
+
+
+    var withFormattedTime = selectedDates.map(function (e) {
+      var formattedHours = (0, _moment["default"])(e).set({
+        hour: (0, _moment["default"])(outterChosenStartTs).get('hour'),
+        minute: (0, _moment["default"])(outterChosenStartTs).get('minute')
+      });
+      return formattedHours;
+    });
+    debugger;
+
+    if (withFormattedTime.find(function (e) {
       return (0, _moment["default"])().isAfter((0, _moment["default"])(e));
     })) {
       setNoticeTxt("Kuupäev on minevikus.");

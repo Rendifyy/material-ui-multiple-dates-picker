@@ -56,7 +56,7 @@ const DatePicker = ({
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
   // Kui aga valitud päev on halfDisabledDate - siis näitame algus kella hoopis selle järgi
   const [timesInternal, setTimesInternal] = useState(times || [])
-  const [noticeTxt, setNoticeTxt] = useState(chooseMulti ? 'Vali kõik päevad koos algus- ja lõppkuupäevaga': '') // Evar tahtis et default msg oleks see.
+  const [noticeTxt, setNoticeTxt] = useState(chooseMulti ? 'Vali kõik päevad koos algus- ja lõppkuupäevaga' : '') // Evar tahtis et default msg oleks see.
   const [outterChosenStartTs, setChosenOuterStartTs] = React.useState(null);
   const [outterChosenEndTs, setChosenOuterEndTs] = React.useState(null);
 
@@ -179,7 +179,24 @@ const DatePicker = ({
         }, 3000);
       }
 
-      if (selectedDates.find(e => moment().isAfter(moment(e)))) {
+      if(!outterChosenStartTs || !outterChosenEndTs) {
+        setNoticeTxt("Kellaajad valimata.");
+        return reset();
+      }
+
+      // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
+      // ja võrdleme praeguse hetkega. Kui praegune hetk on pärast algusaega, siis on järelikult minevik.
+      const withFormattedTime = selectedDates.map((e) => {
+        const formattedHours = moment(e).set({
+          hour: moment(outterChosenStartTs).get('hour'),
+          minute: moment(outterChosenStartTs).get('minute'),
+        })
+        return formattedHours;
+      });
+
+      debugger;
+
+      if (withFormattedTime.find(e => moment().isAfter(moment(e)))) {
         setNoticeTxt("Kuupäev on minevikus.");
         return reset();
       }
