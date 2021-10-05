@@ -179,7 +179,7 @@ const DatePicker = ({
         }, 3000);
       }
 
-      if(!outterChosenStartTs || !outterChosenEndTs) {
+      if(!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
         setNoticeTxt("Kellaajad valimata.");
         return reset();
       }
