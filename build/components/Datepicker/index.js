@@ -237,7 +237,7 @@ var DatePicker = function DatePicker(_ref) {
       }, 3000);
     };
 
-    if (!outterChosenStartTs || !outterChosenEndTs) {
+    if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
       setNoticeTxt("Kellaajad valimata.");
       return reset();
     } // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
@@ -367,7 +367,7 @@ DatePicker.propTypes = {
   submitButtonText: _propTypes["default"].string,
   selectedDatesTitle: _propTypes["default"].string,
   disabledDatesTitle: _propTypes["default"].string,
-  disableClock: _propTypes["default"].string,
+  disableClock: _propTypes["default"].bool,
   halfDisabledDates: _propTypes["default"].array,
   times: _propTypes["default"].array,
   chooseMulti: _propTypes["default"].bool,
