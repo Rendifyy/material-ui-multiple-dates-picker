@@ -58,7 +58,7 @@ const Demo = props => {
       <MultipleDatePicker
         open={open}
         selectedDates={dates}
-        disableClock={true}
+        disableClock={false}
         onCancel={onCancel}
         selectedDatesTitle={"Valitud rendipäevad"}
         disabledDatesTitle={"Broneeritud päevad"}

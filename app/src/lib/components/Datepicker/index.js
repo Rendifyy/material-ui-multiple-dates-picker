@@ -308,7 +308,7 @@ DatePicker.propTypes = {
   submitButtonText: PropTypes.string,
   selectedDatesTitle: PropTypes.string,
   disabledDatesTitle: PropTypes.string,
-  disableClock: PropTypes.string,
+  disableClock: PropTypes.bool,
   halfDisabledDates: PropTypes.array,
   times: PropTypes.array,
   chooseMulti: PropTypes.bool,
