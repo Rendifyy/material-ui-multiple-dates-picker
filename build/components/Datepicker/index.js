@@ -172,21 +172,22 @@ var DatePicker = function DatePicker(_ref) {
           return _utils["default"].isSameDay(sel, half);
         });
       });
-      debugger;
 
       if (anyHalfRentDay) {
         var startTs, endTs; // for Date.prototype And Moment jS
 
         try {
-          startTs = (0, _moment["default"])().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0); // + 1 on ajabuhver peale renditagastust.
+          //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
+          startTs = (0, _moment["default"])().set('hours', anyHalfRentDay.getHours()); // + 1 on ajabuhver peale renditagastust.
         } catch (e) {
-          startTs = (0, _moment["default"])().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0); // + 1 on ajabuhver peale renditagastust.
+          //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
+          startTs = (0, _moment["default"])().set('hours', anyHalfRentDay.hour()); // + 1 on ajabuhver peale renditagastust.
         }
 
         try {
-          endTs = (0, _moment["default"])().set('hours', times[times.length - 1].getHours()).set('minutes', 0);
+          endTs = (0, _moment["default"])().set('hours', times[times.length - 1].getHours() - 1).set('minutes', 0);
         } catch (e) {
-          endTs = (0, _moment["default"])().set('hours', times[times.length - 1].hour()).set('minutes', 0);
+          endTs = (0, _moment["default"])().set('hours', times[times.length - 1].hour() - 1).set('minutes', 0);
         } // Arvutame uue alguse kuupäev rendi päeva pealt.
 
 
