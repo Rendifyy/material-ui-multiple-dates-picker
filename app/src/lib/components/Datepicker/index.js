@@ -103,23 +103,23 @@ const DatePicker = ({
       // On toote kella ajad ning on ka renditud päevad
       if (times && halfDisabledDates) {
         const anyHalfRentDay = halfDisabledDates.find(half => selectedDatesPayload.find((sel => DateUtilities.isSameDay(sel, half))));
-
+        debugger;
         if (anyHalfRentDay) {
           let startTs, endTs;
 
           // for Date.prototype And Moment jS
           try {
-            startTs = moment().set('hours', anyHalfRentDay.getHours() + 1) // + 1 on ajabuhver peale renditagastust.
+            startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0) // + 1 on ajabuhver peale renditagastust.
           }
           catch (e) {
-            startTs = moment().set('hours', anyHalfRentDay.hour() + 1) // + 1 on ajabuhver peale renditagastust.
+            startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0) // + 1 on ajabuhver peale renditagastust.
           }
 
           try {
-            endTs = moment().set('hours', times[times.length - 1].getHours())
+            endTs = moment().set('hours', times[times.length - 1].getHours()).set('minutes', 0)
           }
           catch (e) {
-            endTs = moment().set('hours', times[times.length - 1].hour())
+            endTs = moment().set('hours', times[times.length - 1].hour()).set('minutes', 0)
           }
 
           // Arvutame uue alguse kuupäev rendi päeva pealt.
