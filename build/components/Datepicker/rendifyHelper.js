@@ -14,7 +14,7 @@ var getListForStartAndEndTs = function getListForStartAndEndTs(startTs, endTs) {
   debugger;
   var start = (0, _moment["default"])(startTs);
   var end = (0, _moment["default"])(endTs);
-  var diffHour = end.diff(start, 'hours');
+  var diffHour = end.hour() - start.hour();
   var listOfTimes = [start]; // starting from 1 as we already have first element
 
   for (var i = 1; i <= diffHour; i++) {

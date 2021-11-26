@@ -1,10 +1,10 @@
 import moment from "moment";
 
-export const getListForStartAndEndTs = (startTs, endTs) => {
+export const  getListForStartAndEndTs = (startTs, endTs) => {
   debugger;
   const start = moment(startTs);
   const end = moment(endTs);
-  const diffHour = end.diff(start, 'hours');
+  const diffHour = end.hour() - start.hour();
   const listOfTimes = [start];
 
   // starting from 1 as we already have first element
