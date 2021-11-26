@@ -105,22 +105,22 @@ const DatePicker = ({
         const anyHalfRentDay = halfDisabledDates.find(half => selectedDatesPayload.find((sel => DateUtilities.isSameDay(sel, half))));
         if (anyHalfRentDay) {
           let startTs, endTs;
-
+          debugger;
           // for Date.prototype And Moment jS
           try {
             //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
-            startTs = moment().set('hours', anyHalfRentDay.getHours()).set('minutes', anyHalfRentDay.getMinutes()); // + 1 on ajabuhver peale renditagastust.
+            startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
           }
           catch (e) {
             //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
-            startTs = moment().set('hours', anyHalfRentDay.hour()).set('minutes', anyHalfRentDay.getMinutes()); // + 1 on ajabuhver peale renditagastust.
+            startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
           }
 
           try {
-            endTs = moment().set('hours', times[times.length - 1].getHours() -1).set('minutes', anyHalfRentDay.getMinutes());
+            endTs = times[times.length - 1];
           }
           catch (e) {
-            endTs = moment().set('hours', times[times.length - 1].hour() -1).set('minutes', anyHalfRentDay.getMinutes());
+            endTs = times[times.length - 1];
           }
 
           // Arvutame uue alguse kuupäev rendi päeva pealt.
