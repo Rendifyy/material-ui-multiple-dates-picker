@@ -46,8 +46,12 @@ const Demo = props => {
 
   const ms = 86400000;
   const later = new Date().getTime() + ms;
+  const later2 = new Date().getTime() + ms + ms;
+  const later3 = new Date().getTime() + ms + ms + ms;
   const earlier = new Date().getTime() + 82200000;
   const tomorrowLater = new Date(later);
+  const tomorrowLater2 = new Date(later2);
+  const tomorrowLater3 = new Date(later3);
   const tomorrowEarly = new Date(earlier);
 
   return (
@@ -65,8 +69,10 @@ const Demo = props => {
         onSubmit={onSubmit}
         chooseMulti={true}
         selectedStartTs={selectedStartTs}
+        disabledDates={[tomorrowLater3]}
         selectedEndTs={selectedEndTs}
         halfDisabledDates={[tomorrowEarly]}
+        vacationDaysByIndex={[5,6]}
         times={[new Date(), new Date(new Date().getTime() + 26400000)]}
       />
       <Typography color='textSecondary'>

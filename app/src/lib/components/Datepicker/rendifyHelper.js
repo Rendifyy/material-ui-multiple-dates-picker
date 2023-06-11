@@ -1,7 +1,6 @@
 import moment from "moment";
 
 export const  getListForStartAndEndTs = (startTs, endTs) => {
-  debugger;
   const start = moment(startTs);
   const end = moment(endTs);
   const diffHour = end.hour() - start.hour();

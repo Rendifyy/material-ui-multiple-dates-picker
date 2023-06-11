@@ -27,13 +27,18 @@ class Weeks extends Component {
       moment.localeData().firstDayOfWeek()
     )
 
+    // Puhkepäevad on disabled
+    const disabledVacationDays = weekArray.flat().filter(e => e).filter(e => {
+      return this.props.vacationDaysByIndex.includes(e.getDay());
+    })
+
     return weekArray.map(
       (s, i) => (
         <Week
           key={i}
           week={s}
           selectedDates={this.props.selectedDates}
-          disabledDates={this.props.disabledDates}
+          disabledDates={(this.props.disabledDates || []).concat(disabledVacationDays)}
           onSelect={this.props.onSelect}
           minDate={this.props.minDate}
           maxDate={this.props.maxDate}

@@ -24,6 +24,15 @@ const styles = theme => ({
   }
 })
 
+const estonian = {
+  0: 'P',
+  1: 'E',
+  2: 'T',
+  3: 'K',
+  4: 'N',
+  5: 'R',
+  6: 'L'
+};
 class DateDisplay extends Component {
   state = {
     selectedYear: false
@@ -52,10 +61,13 @@ class DateDisplay extends Component {
   }
 
   render() {
-    const {classes, selectedDates, readOnly, disabledDatesTitle, disabledDates} = this.props
+    const {classes, selectedDates, readOnly, disabledDatesTitle, disabledDates, vacationDaysByIndex} = this.props
 
     return (
       <div className={classes.root}>
+        {vacationDaysByIndex && <div className={classes.header}>
+          <Typography variant='subtitle1'>Puhkepäevad: {vacationDaysByIndex.map(e => estonian[e]).join(', ')}</Typography>
+        </div>}
         <div className={classes.header}>
           <Typography variant='subtitle1'>{this.props.selectedDatesTitle}</Typography>
           <Typography variant='subtitle1' color={readOnly ? 'textSecondary' : 'primary'}>

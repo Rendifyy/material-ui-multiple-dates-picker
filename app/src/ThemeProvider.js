@@ -1,14 +1,14 @@
 import React, { createContext, useState, useCallback } from 'react'
 import { createMuiTheme } from '@material-ui/core/styles'
 import MuiThemeProvider from '@material-ui/styles/ThemeProvider'
-import orange from '@material-ui/core/colors/orange'
+import green from '@material-ui/core/colors/green'
 import purple from '@material-ui/core/colors/purple'
 
 function createTheme (light) {
   const theme = {
     palette: {
       type: light ? 'light' : 'dark',
-      primary: orange,
+      primary: green,
       secondary: purple
     }
   }

@@ -15,13 +15,14 @@ const useCircleStyles = makeStyles(theme => ({
     color: theme.palette.text.primary
   },
   rootTextDisabled: {
-    background: '#ecdfdf'
+    color: 'white',
+    background: '#38c78980'
   },
   todayRoot: {
     background: theme.palette.background.default
   },
   checkedRoot: {
-    background: theme.palette.primary.main
+    background: '#39C689'
   },
   checkedRootDisabled: {
     background: theme.palette.action.disabled
@@ -55,10 +56,10 @@ const Circle = ({ label, disabled, checked, onCheck, className, isToday }) => {
         classes.root,
         {
           [classes.rootText]: !checked && !disabled,
-          [classes.rootTextDisabled]: disabled,
           [classes.todayRoot]: isToday,
           [classes.checkedRoot]: checked && !disabled,
-          [classes.checkedRootDisabled]: checked && disabled
+          [classes.checkedRootDisabled]: checked && disabled,
+          [classes.rootTextDisabled]: disabled
         },
         className
       )}

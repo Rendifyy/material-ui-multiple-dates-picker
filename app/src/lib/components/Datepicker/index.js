@@ -51,7 +51,9 @@ const DatePicker = ({
                       halfDisabledDates,
                       chooseMulti,
                       selectedStartTs,
-                      selectedEndTs
+                      selectedEndTs,
+                      vacationDays,
+                      vacationDaysByIndex,
                     }) => {
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
   // Kui aga valitud päev on halfDisabledDate - siis näitame algus kella hoopis selle järgi
@@ -105,7 +107,6 @@ const DatePicker = ({
         const anyHalfRentDay = halfDisabledDates.find(half => selectedDatesPayload.find((sel => DateUtilities.isSameDay(sel, half))));
         if (anyHalfRentDay) {
           let startTs, endTs;
-          debugger;
           // for Date.prototype And Moment jS
           try {
             //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
@@ -194,8 +195,6 @@ const DatePicker = ({
         })
         return formattedHours;
       });
-
-      debugger;
 
       if (withFormattedTime.find(e => moment().isAfter(moment(e)))) {
         setNoticeTxt("Kuupäev on minevikus.");
@@ -292,6 +291,8 @@ const DatePicker = ({
         noticeTxt={noticeTxt}
         selectedStartTs={selectedStartTs}
         selectedEndTs={selectedEndTs}
+        vacationDays={vacationDays}
+        vacationDaysByIndex={vacationDaysByIndex}
         setOuterStartEndTs={setOuterStartEndTs}
       />
       {/* </DialogContent> */}

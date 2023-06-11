@@ -56,6 +56,7 @@ const Calendar = ({
                     disabledDates,
                     onSelect,
                     onCancel,
+  vacationDaysByIndex,
                     onOk,
                     readOnly,
                     onRemoveAtIndex,
@@ -134,6 +135,7 @@ const Calendar = ({
           <Month
             displayDate={displayDate}
             key={displayDate.toDateString()}
+            vacationDaysByIndex={vacationDaysByIndex}
             selectedDates={selectedDates}
             disabledDates={disabledDates}
             minDate={minDate}
@@ -214,6 +216,7 @@ const Calendar = ({
         />
       </div>
       <DateDisplay
+          vacationDaysByIndex={vacationDaysByIndex}
         selectedDatesTitle={selectedDatesTitle}
         disabledDatesTitle={disabledDatesTitle}
         selectedDates={selectedDates}
