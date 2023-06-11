@@ -38,7 +38,7 @@ class Weeks extends Component {
           key={i}
           week={s}
           selectedDates={this.props.selectedDates}
-          disabledDates={(this.props.disabledDates || []).concat(disabledVacationDays)}
+          disabledDates={(this.props.disabledDates || []).concat(this.props.selectedDates.length === 0 ? disabledVacationDays : [])}
           onSelect={this.props.onSelect}
           minDate={this.props.minDate}
           maxDate={this.props.maxDate}

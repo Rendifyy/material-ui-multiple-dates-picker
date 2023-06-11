@@ -36,29 +36,30 @@ function reducer(state, action) {
 }
 
 const DatePicker = ({
-                      open,
-                      readOnly,
-                      onCancel,
-                      onSubmit,
-                      selectedDates: outerSelectedDates,
-                      disabledDates,
-                      cancelButtonText,
-                      submitButtonText = 'Submit',
-                      selectedDatesTitle = 'Selected Dates',
-                      disabledDatesTitle,
-                      disableClock,
-                      times,
-                      halfDisabledDates,
-                      chooseMulti,
-                      selectedStartTs,
-                      selectedEndTs,
-                      vacationDays,
-                      vacationDaysByIndex,
-                    }) => {
+  open,
+  readOnly,
+  onCancel,
+  onSubmit,
+  selectedDates: outerSelectedDates,
+  disabledDates,
+  cancelButtonText,
+  submitButtonText = 'Submit',
+  selectedDatesTitle = 'Selected Dates',
+  disabledDatesTitle,
+  disableClock,
+  times,
+  halfDisabledDates,
+  chooseMulti,
+  selectedStartTs,
+  selectedEndTs,
+  vacationDaysByIndex,
+}) => {
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
   // Kui aga valitud päev on halfDisabledDate - siis näitame algus kella hoopis selle järgi
   const [timesInternal, setTimesInternal] = useState(times || [])
-  const [noticeTxt, setNoticeTxt] = useState(chooseMulti ? 'Vali kõik päevad koos algus- ja lõppkuupäevaga' : '') // Evar tahtis et default msg oleks see.
+  const [noticeTxt, setNoticeTxt] = useState(chooseMulti
+      ? 'Vali kõik renditavad päevad. Rendi algus ja lõpp ei tohi olla puhkepäeval.'
+      : '') // Evar tahtis et default msg oleks see.
   const [outterChosenStartTs, setChosenOuterStartTs] = React.useState(null);
   const [outterChosenEndTs, setChosenOuterEndTs] = React.useState(null);
 
@@ -67,9 +68,9 @@ const DatePicker = ({
   }
 
   const [{selectedDates, minDate, maxDate}, dispatch] = useReducer(
-    reducer,
-    outerSelectedDates,
-    initState
+      reducer,
+      outerSelectedDates,
+      initState
   )
 
   const classes = useStyles();
@@ -81,222 +82,233 @@ const DatePicker = ({
   };
 
   const onSelect = useCallback(
-    day => {
-      if (readOnly) {
-        return
-      }
-
-      let selectedDatesPayload = []
-
-      if (DateUtilities.dateIn(selectedDates, day)) {
-        selectedDatesPayload = selectedDates.filter(date => !DateUtilities.isSameDay(date, day));
-
-        dispatch({
-          type: 'setSelectedDates',
-          payload: selectedDatesPayload
-        })
-      } else {
-        selectedDatesPayload = [...selectedDates, day];
-
-        dispatch({type: 'setSelectedDates', payload: selectedDatesPayload})
-      }
-
-      // RENDIFY LOGIC BEGIN
-      // On toote kella ajad ning on ka renditud päevad
-      if (times && halfDisabledDates) {
-        const anyHalfRentDay = halfDisabledDates.find(half => selectedDatesPayload.find((sel => DateUtilities.isSameDay(sel, half))));
-        if (anyHalfRentDay) {
-          let startTs, endTs;
-          // for Date.prototype And Moment jS
-          try {
-            //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
-            startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
-          }
-          catch (e) {
-            //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
-            startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
-          }
-
-          try {
-            endTs = times[times.length - 1];
-          }
-          catch (e) {
-            endTs = times[times.length - 1];
-          }
-
-          // Arvutame uue alguse kuupäev rendi päeva pealt.
-          setTimesInternal(getListForStartAndEndTs(startTs, endTs));
-        } else {
-          setTimesInternal(times)
+      day => {
+        if (readOnly) {
+          return
         }
-      } else {
-        return; // Pole bronnitud päevi ja kuupäevad on juba on init paika pandud.
-      }
 
-    },
-    [selectedDates, dispatch, readOnly, halfDisabledDates, times]
+        let selectedDatesPayload = []
+
+        if (DateUtilities.dateIn(selectedDates, day)) {
+          selectedDatesPayload = selectedDates.filter(
+              date => !DateUtilities.isSameDay(date, day));
+
+          dispatch({
+            type: 'setSelectedDates',
+            payload: selectedDatesPayload
+          })
+        } else {
+          selectedDatesPayload = [...selectedDates, day];
+
+          dispatch({type: 'setSelectedDates', payload: selectedDatesPayload})
+        }
+
+        // RENDIFY LOGIC BEGIN
+        // On toote kella ajad ning on ka renditud päevad
+        if (times && halfDisabledDates) {
+          const anyHalfRentDay = halfDisabledDates.find(
+              half => selectedDatesPayload.find(
+                  (sel => DateUtilities.isSameDay(sel, half))));
+          if (anyHalfRentDay) {
+            let startTs, endTs;
+            // for Date.prototype And Moment jS
+            try {
+              //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
+              startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
+            } catch (e) {
+              //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
+              startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
+            }
+
+            try {
+              endTs = times[times.length - 1];
+            } catch (e) {
+              endTs = times[times.length - 1];
+            }
+
+            // Arvutame uue alguse kuupäev rendi päeva pealt.
+            setTimesInternal(getListForStartAndEndTs(startTs, endTs));
+          } else {
+            setTimesInternal(times)
+          }
+        } else {
+          return; // Pole bronnitud päevi ja kuupäevad on juba on init paika pandud.
+        }
+
+      },
+      [selectedDates, dispatch, readOnly, halfDisabledDates, times]
   )
 
   const onRemoveAtIndex = useCallback(
-    index => {
-      if (readOnly) {
-        return
-      }
-      const newDates = [...selectedDates]
-      if (index > -1) {
-        newDates.splice(index, 1)
-      }
+      index => {
+        if (readOnly) {
+          return
+        }
+        const newDates = [...selectedDates]
+        if (index > -1) {
+          newDates.splice(index, 1)
+        }
 
-      dispatch({type: 'setSelectedDates', payload: newDates})
-    },
-    [selectedDates, dispatch, readOnly]
+        dispatch({type: 'setSelectedDates', payload: newDates})
+      },
+      [selectedDates, dispatch, readOnly]
   )
 
   const dismiss = useCallback(
-    () => {
-      dispatch({type: 'setSelectedDates', payload: []})
-      onCancel()
-    },
-    [dispatch, onCancel]
+      () => {
+        dispatch({type: 'setSelectedDates', payload: []})
+        onCancel()
+      },
+      [dispatch, onCancel]
   )
 
   const handleCancel = useCallback(
-    e => {
-      e.preventDefault()
-      dismiss()
-    },
-    [dismiss]
+      e => {
+        e.preventDefault()
+        dismiss()
+      },
+      [dismiss]
   )
 
   const handleOk = useCallback(
-    e => {
-      e.preventDefault()
-      if (readOnly) {
-        return
-      }
+      e => {
+        e.preventDefault()
+        if (readOnly) {
+          return
+        }
 
-      const reset = () => {
-        setTimeout(() => {
-          setNoticeTxt('');
-        }, 3000);
-      }
+        const reset = () => {
+          setTimeout(() => {
+            setNoticeTxt('');
+          }, 3000);
+        }
 
-      if(!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
-        setNoticeTxt("Kellaajad valimata.");
-        return reset();
-      }
+        if (selectedDates.length) {
+          const lastDayChosen = selectedDates[selectedDates.length - 1].getDay();
+          if(vacationDaysByIndex.includes(lastDayChosen)) {
+            setNoticeTxt("Lõpp päev on puhkepäeval.");
+            return reset();
+          }
+        }
 
-      // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
-      // ja võrdleme praeguse hetkega. Kui praegune hetk on pärast algusaega, siis on järelikult minevik.
-      const withFormattedTime = selectedDates.map((e) => {
-        const formattedHours = moment(e).set({
-          hour: moment(outterChosenStartTs).get('hour'),
-          minute: moment(outterChosenStartTs).get('minute'),
-        })
-        return formattedHours;
-      });
-
-      if (withFormattedTime.find(e => moment().isAfter(moment(e)))) {
-        setNoticeTxt("Kuupäev on minevikus.");
-        return reset();
-      }
-
-      /* validation 1 */
-      if (chooseMulti && (selectedDates.length === 0 || selectedDates.length === 1)) {
-        setNoticeTxt("Vali kõik päevad koos algus- ja lõppkuupäevaga");
-        return reset();
-      }
-
-      /* validation 2 */
-      if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
-        setNoticeTxt("Vali ka rendi algus ja lõpp kellaajad.");
-        return reset();
-      }
-
-      /* validation 3 */
-      if (chooseMulti === false) {
-        if (selectedDates.length > 1) {
-          setNoticeTxt("Vali ainult üks päev");
+        if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
+          setNoticeTxt("Kellaajad valimata.");
           return reset();
         }
 
-        if (moment(outterChosenEndTs).isBefore(outterChosenStartTs)) {
-          setNoticeTxt("Alguse kellaaeg on hiljem kui lõpu.");
+
+        // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
+        // ja võrdleme praeguse hetkega. Kui praegune hetk on pärast algusaega, siis on järelikult minevik.
+        const withFormattedTime = selectedDates.map((e) => {
+          const formattedHours = moment(e).set({
+            hour: moment(outterChosenStartTs).get('hour'),
+            minute: moment(outterChosenStartTs).get('minute'),
+          })
+          return formattedHours;
+        });
+
+        if (withFormattedTime.find(e => moment().isAfter(moment(e)))) {
+          setNoticeTxt("Kuupäev on minevikus.");
           return reset();
         }
-      }
 
-      if (!disableClock) {
-        /* validation 4 */
-        const sortedDates = sortDate(selectedDates); // järjekorda ja vaatame et päevade vahel ei oleks tühjust.
-        let triggered = false;
+        /* validation 1 */
+        if (chooseMulti && (selectedDates.length === 0)) {
+          setNoticeTxt("Vali kõik päevad koos algus- ja lõppkuupäevaga");
+          return reset();
+        }
 
-        sortedDates.forEach((sd, i) => {
+        /* validation 2 */
+        if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
+          setNoticeTxt("Vali ka rendi algus ja lõpp kellaajad.");
+          return reset();
+        }
+
+        /* validation 3 */
+        if (chooseMulti === false) {
+          if (selectedDates.length > 1) {
+            setNoticeTxt("Vali ainult üks päev");
+            return reset();
+          }
+
+          if (moment(outterChosenEndTs).isBefore(outterChosenStartTs)) {
+            setNoticeTxt("Alguse kellaaeg on hiljem kui lõpu.");
+            return reset();
+          }
+        }
+
+        if (!disableClock) {
+          /* validation 4 */
+          const sortedDates = sortDate(selectedDates); // järjekorda ja vaatame et päevade vahel ei oleks tühjust.
+          let triggered = false;
+
+          sortedDates.forEach((sd, i) => {
+            if (triggered) {
+              return;
+            }
+
+            const chosen = sd;
+            const nextChosen = sortedDates[i + 1];
+            const duration = moment.duration(
+                moment(nextChosen).diff(moment(chosen)));
+
+            if (nextChosen && duration.asDays() > 1) {
+              triggered = true;
+              setNoticeTxt("Päevade vahel ei tohi olla tühja päeva.");
+              return reset();
+            }
+          });
+
           if (triggered) {
             return;
           }
-
-          const chosen = sd;
-          const nextChosen = sortedDates[i + 1];
-          const duration = moment.duration(moment(nextChosen).diff(moment(chosen)));
-
-          if (nextChosen && duration.asDays() > 1) {
-            triggered = true;
-            setNoticeTxt("Päevade vahel ei tohi olla tühja päeva.");
-            return reset();
-          }
-        });
-
-        if (triggered) {
-          return;
         }
-      }
 
-      onSubmit({selectedDates, outterChosenStartTs, outterChosenEndTs})
-    },
-    [onSubmit, selectedDates, readOnly, outterChosenEndTs, outterChosenStartTs, chooseMulti, chooseMulti]
+        onSubmit({selectedDates, outterChosenStartTs, outterChosenEndTs})
+      },
+      [onSubmit, selectedDates, readOnly, outterChosenEndTs,
+        outterChosenStartTs, chooseMulti, chooseMulti]
   )
 
   useEffect(
-    () => {
-      if (open) {
-        dispatch({
-          type: 'setSelectedDates',
-          payload: outerSelectedDates != null ? outerSelectedDates : []
-        })
-      }
-    },
-    [open, outerSelectedDates]
+      () => {
+        if (open) {
+          dispatch({
+            type: 'setSelectedDates',
+            payload: outerSelectedDates != null ? outerSelectedDates : []
+          })
+        }
+      },
+      [open, outerSelectedDates]
   )
 
   return (
-    <Dialog open={open} classes={{paper: classes.dialogPaper}}>
-      {/* <DialogContent> */}
-      <Calendar
-        selectedDates={selectedDates}
-        disabledDates={disabledDates}
-        disabledDatesTitle={disabledDatesTitle}
-        onSelect={onSelect}
-        onRemoveAtIndex={onRemoveAtIndex}
-        minDate={minDate}
-        maxDate={maxDate}
-        onCancel={handleCancel}
-        onOk={handleOk}
-        readOnly={readOnly}
-        disableClock={disableClock}
-        cancelButtonText={cancelButtonText}
-        submitButtonText={submitButtonText}
-        selectedDatesTitle={selectedDatesTitle}
-        times={timesInternal}
-        noticeTxt={noticeTxt}
-        selectedStartTs={selectedStartTs}
-        selectedEndTs={selectedEndTs}
-        vacationDays={vacationDays}
-        vacationDaysByIndex={vacationDaysByIndex}
-        setOuterStartEndTs={setOuterStartEndTs}
-      />
-      {/* </DialogContent> */}
-    </Dialog>
+      <Dialog open={open} classes={{paper: classes.dialogPaper}}>
+        {/* <DialogContent> */}
+        <Calendar
+            selectedDates={selectedDates}
+            disabledDates={disabledDates}
+            disabledDatesTitle={disabledDatesTitle}
+            onSelect={onSelect}
+            onRemoveAtIndex={onRemoveAtIndex}
+            minDate={minDate}
+            maxDate={maxDate}
+            onCancel={handleCancel}
+            onOk={handleOk}
+            readOnly={readOnly}
+            disableClock={disableClock}
+            cancelButtonText={cancelButtonText}
+            submitButtonText={submitButtonText}
+            selectedDatesTitle={selectedDatesTitle}
+            times={timesInternal}
+            noticeTxt={noticeTxt}
+            selectedStartTs={selectedStartTs}
+            selectedEndTs={selectedEndTs}
+            vacationDaysByIndex={vacationDaysByIndex}
+            setOuterStartEndTs={setOuterStartEndTs}
+        />
+        {/* </DialogContent> */}
+      </Dialog>
   )
 }
 

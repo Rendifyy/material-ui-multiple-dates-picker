@@ -138,7 +138,7 @@ function (_Component) {
         className: classes.header
       }, _react["default"].createElement(_core.Typography, {
         variant: "subtitle1"
-      }, "Puhkep\xE4evad: ", vacationDaysByIndex.map(function (e) {
+      }, _react["default"].createElement("b", null, "Puhkep\xE4evad"), ": ", vacationDaysByIndex.map(function (e) {
         return estonian[e];
       }).join(', '))), _react["default"].createElement("div", {
         className: classes.header

@@ -98,7 +98,6 @@ var DatePicker = function DatePicker(_ref) {
       chooseMulti = _ref.chooseMulti,
       selectedStartTs = _ref.selectedStartTs,
       selectedEndTs = _ref.selectedEndTs,
-      vacationDays = _ref.vacationDays,
       vacationDaysByIndex = _ref.vacationDaysByIndex;
 
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
@@ -108,7 +107,7 @@ var DatePicker = function DatePicker(_ref) {
       timesInternal = _useState2[0],
       setTimesInternal = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(chooseMulti ? 'Vali kõik päevad koos algus- ja lõppkuupäevaga' : ''),
+  var _useState3 = (0, _react.useState)(chooseMulti ? 'Vali kõik renditavad päevad. Rendi algus ja lõpp ei tohi olla puhkepäeval.' : ''),
       _useState4 = _slicedToArray(_useState3, 2),
       noticeTxt = _useState4[0],
       setNoticeTxt = _useState4[1]; // Evar tahtis et default msg oleks see.
@@ -241,6 +240,15 @@ var DatePicker = function DatePicker(_ref) {
       }, 3000);
     };
 
+    if (selectedDates.length) {
+      var lastDayChosen = selectedDates[selectedDates.length - 1].getDay();
+
+      if (vacationDaysByIndex.includes(lastDayChosen)) {
+        setNoticeTxt("Lõpp päev on puhkepäeval.");
+        return reset();
+      }
+    }
+
     if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
       setNoticeTxt("Kellaajad valimata.");
       return reset();
@@ -265,7 +273,7 @@ var DatePicker = function DatePicker(_ref) {
     /* validation 1 */
 
 
-    if (chooseMulti && (selectedDates.length === 0 || selectedDates.length === 1)) {
+    if (chooseMulti && selectedDates.length === 0) {
       setNoticeTxt("Vali kõik päevad koos algus- ja lõppkuupäevaga");
       return reset();
     }
@@ -356,7 +364,6 @@ var DatePicker = function DatePicker(_ref) {
     noticeTxt: noticeTxt,
     selectedStartTs: selectedStartTs,
     selectedEndTs: selectedEndTs,
-    vacationDays: vacationDays,
     vacationDaysByIndex: vacationDaysByIndex,
     setOuterStartEndTs: setOuterStartEndTs
   }));
