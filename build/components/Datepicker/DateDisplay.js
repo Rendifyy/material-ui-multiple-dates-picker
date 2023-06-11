@@ -60,6 +60,16 @@ var styles = function styles(theme) {
   };
 };
 
+var estonian = {
+  0: 'P',
+  1: 'E',
+  2: 'T',
+  3: 'K',
+  4: 'N',
+  5: 'R',
+  6: 'L'
+};
+
 var DateDisplay =
 /*#__PURE__*/
 function (_Component) {
@@ -120,10 +130,17 @@ function (_Component) {
           selectedDates = _this$props.selectedDates,
           readOnly = _this$props.readOnly,
           disabledDatesTitle = _this$props.disabledDatesTitle,
-          disabledDates = _this$props.disabledDates;
+          disabledDates = _this$props.disabledDates,
+          vacationDaysByIndex = _this$props.vacationDaysByIndex;
       return _react["default"].createElement("div", {
         className: classes.root
-      }, _react["default"].createElement("div", {
+      }, vacationDaysByIndex && _react["default"].createElement("div", {
+        className: classes.header
+      }, _react["default"].createElement(_core.Typography, {
+        variant: "subtitle1"
+      }, "Puhkep\xE4evad: ", vacationDaysByIndex.map(function (e) {
+        return estonian[e];
+      }).join(', '))), _react["default"].createElement("div", {
         className: classes.header
       }, _react["default"].createElement(_core.Typography, {
         variant: "subtitle1"

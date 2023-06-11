@@ -71,14 +71,20 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Weeks)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "renderWeeks", function () {
-      var weekArray = _dateUtils.defaultUtils.getWeekArray(_this.props.displayDate, _moment["default"].localeData().firstDayOfWeek());
+      var weekArray = _dateUtils.defaultUtils.getWeekArray(_this.props.displayDate, _moment["default"].localeData().firstDayOfWeek()); // Puhkepäevad on disabled
 
+
+      var disabledVacationDays = weekArray.flat().filter(function (e) {
+        return e;
+      }).filter(function (e) {
+        return _this.props.vacationDaysByIndex.includes(e.getDay());
+      });
       return weekArray.map(function (s, i) {
         return _react["default"].createElement(_Week["default"], {
           key: i,
           week: s,
           selectedDates: _this.props.selectedDates,
-          disabledDates: _this.props.disabledDates,
+          disabledDates: (_this.props.disabledDates || []).concat(disabledVacationDays),
           onSelect: _this.props.onSelect,
           minDate: _this.props.minDate,
           maxDate: _this.props.maxDate,

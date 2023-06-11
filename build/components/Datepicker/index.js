@@ -97,7 +97,9 @@ var DatePicker = function DatePicker(_ref) {
       halfDisabledDates = _ref.halfDisabledDates,
       chooseMulti = _ref.chooseMulti,
       selectedStartTs = _ref.selectedStartTs,
-      selectedEndTs = _ref.selectedEndTs;
+      selectedEndTs = _ref.selectedEndTs,
+      vacationDays = _ref.vacationDays,
+      vacationDaysByIndex = _ref.vacationDaysByIndex;
 
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
   // Kui aga valitud päev on halfDisabledDate - siis näitame algus kella hoopis selle järgi
@@ -174,8 +176,7 @@ var DatePicker = function DatePicker(_ref) {
       });
 
       if (anyHalfRentDay) {
-        var startTs, endTs;
-        debugger; // for Date.prototype And Moment jS
+        var startTs, endTs; // for Date.prototype And Moment jS
 
         try {
           //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
@@ -254,7 +255,6 @@ var DatePicker = function DatePicker(_ref) {
       });
       return formattedHours;
     });
-    debugger;
 
     if (withFormattedTime.find(function (e) {
       return (0, _moment["default"])().isAfter((0, _moment["default"])(e));
@@ -356,6 +356,8 @@ var DatePicker = function DatePicker(_ref) {
     noticeTxt: noticeTxt,
     selectedStartTs: selectedStartTs,
     selectedEndTs: selectedEndTs,
+    vacationDays: vacationDays,
+    vacationDaysByIndex: vacationDaysByIndex,
     setOuterStartEndTs: setOuterStartEndTs
   }));
 };

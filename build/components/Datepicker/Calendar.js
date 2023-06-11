@@ -89,6 +89,7 @@ var Calendar = function Calendar(_ref) {
       disabledDates = _ref.disabledDates,
       onSelect = _ref.onSelect,
       onCancel = _ref.onCancel,
+      vacationDaysByIndex = _ref.vacationDaysByIndex,
       onOk = _ref.onOk,
       readOnly = _ref.readOnly,
       onRemoveAtIndex = _ref.onRemoveAtIndex,
@@ -169,6 +170,7 @@ var Calendar = function Calendar(_ref) {
   }), _react["default"].createElement(_WeekHeader["default"], null), _react["default"].createElement(_Month["default"], {
     displayDate: displayDate,
     key: displayDate.toDateString(),
+    vacationDaysByIndex: vacationDaysByIndex,
     selectedDates: selectedDates,
     disabledDates: disabledDates,
     minDate: minDate,
@@ -223,6 +225,7 @@ var Calendar = function Calendar(_ref) {
     cancelButtonText: cancelButtonText,
     submitButtonText: submitButtonText
   })), _react["default"].createElement(_DateDisplay["default"], {
+    vacationDaysByIndex: vacationDaysByIndex,
     selectedDatesTitle: selectedDatesTitle,
     disabledDatesTitle: disabledDatesTitle,
     selectedDates: selectedDates,

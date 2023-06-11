@@ -11,7 +11,6 @@ var _moment = _interopRequireDefault(require("moment"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var getListForStartAndEndTs = function getListForStartAndEndTs(startTs, endTs) {
-  debugger;
   var start = (0, _moment["default"])(startTs);
   var end = (0, _moment["default"])(endTs);
   var diffHour = end.hour() - start.hour();
