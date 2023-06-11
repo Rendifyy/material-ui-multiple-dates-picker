@@ -213,8 +213,9 @@ const DatePicker = ({
         }
 
         /* validation 1 */
-        if (chooseMulti && (selectedDates.length === 0)) {
-          setNoticeTxt("Vali kõik päevad koos algus- ja lõppkuupäevaga");
+        if (chooseMulti && (selectedDates.length === 0 || selectedDates.length
+            === 1)) {
+          setNoticeTxt("Rentija minimaalne rendi aeg on 1 ööpäev.");
           return reset();
         }
 
