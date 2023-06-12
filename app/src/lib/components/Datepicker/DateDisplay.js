@@ -65,7 +65,7 @@ class DateDisplay extends Component {
 
     return (
       <div className={classes.root}>
-        {vacationDaysByIndex && <div className={classes.header}>
+        {vacationDaysByIndex.length && <div className={classes.header}>
           <Typography variant='subtitle1'><b>Puhkepäevad</b>: {vacationDaysByIndex.map(e => estonian[e]).join(', ')}</Typography>
         </div>}
         <div className={classes.header}>

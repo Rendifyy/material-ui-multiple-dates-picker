@@ -134,7 +134,7 @@ function (_Component) {
           vacationDaysByIndex = _this$props.vacationDaysByIndex;
       return _react["default"].createElement("div", {
         className: classes.root
-      }, vacationDaysByIndex && _react["default"].createElement("div", {
+      }, vacationDaysByIndex.length && _react["default"].createElement("div", {
         className: classes.header
       }, _react["default"].createElement(_core.Typography, {
         variant: "subtitle1"
