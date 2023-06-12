@@ -84,7 +84,7 @@ function (_Component) {
           key: i,
           week: s,
           selectedDates: _this.props.selectedDates,
-          disabledDates: (_this.props.disabledDates || []).concat(_this.props.selectedDates.length === 0 ? disabledVacationDays : []),
+          disabledDates: (_this.props.disabledDates || []).concat(_this.props.selectedDates.length === 0 && !_this.props.readOnly ? disabledVacationDays : []),
           onSelect: _this.props.onSelect,
           minDate: _this.props.minDate,
           maxDate: _this.props.maxDate,
