@@ -55,18 +55,12 @@ const Calendar = ({
                     selectedDates,
                     disabledDates,
                     onSelect,
-                    onCancel,
   vacationDaysByIndex,
-                    onOk,
                     readOnly,
                     onRemoveAtIndex,
-                    cancelButtonText,
-                    submitButtonText,
                     selectedDatesTitle,
                     disabledDatesTitle,
-                    disableClock,
                     times,
-                    noticeTxt,
                     setOuterStartEndTs,
                     selectedStartTs,
                     selectedEndTs
@@ -118,13 +112,9 @@ const Calendar = ({
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{border: '1px solid black'}}>
       <div className={classes.selectorContainer}>
         <div className={classes.calendarContainer}>
-          {noticeTxt &&
-          <div className={classes.infoContainer}>
-            <p><InfoIcon className={classes.infoIcon}/><span className={classes.infoTxt}>{noticeTxt}</span></p>
-          </div>}
           <CalendarToolbar
             displayDate={displayDate}
             onMonthChange={handleMonthChange}
@@ -144,76 +134,7 @@ const Calendar = ({
             readOnly={readOnly}
             ref={calendar}
           />
-          {!disableClock && <>
-            <FormControl>
-              <Select
-                id="start-select-outlined"
-                value={chosenStartTs}
-                onChange={(event) => {
-                  // Value has to be a primitive (number, string)
-                  // Otherwise changes are not reflected to UI
-                  const val = event.target.value;
-
-                  if (val !== 100) {
-                    setChosenStartTs(val);
-                  }
-                }}
-                label="Algusaeg"
-              >
-                <MenuItem value={100}>
-                  <em>Algusaeg</em>
-                </MenuItem>
-                {times.map((e, i) => {
-                  return (
-                    <MenuItem
-                      key={`time${e.id}`}
-                      value={i}
-                    >
-                      {moment(e).format('HH:mm')}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <br/>
-            <FormControl>
-              <Select
-                id="end-select-outlined"
-                value={chosenEndTs}
-                onChange={(event) => {
-                  // Value has to be a primitive (number, string)
-                  // Otherwise changes are not reflected to UI
-                  const val = event.target.value;
-
-                  if (val !== 100) {
-                    setChosenEndTs(val);
-                  }
-                }}
-                label="Tagastus kellaaeg"
-              >
-                <MenuItem value={100}>
-                  <em>Tagastus kellaaeg</em>
-                </MenuItem>
-                {times.map((e, i) => {
-                  return (
-                    <MenuItem
-                      key={`time${e.id}`}
-                      value={i}
-                    >
-                      {moment(e).format('HH:mm')}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl></>}
         </div>
-        <CalendarButtons
-          readOnly={readOnly}
-          onCancel={onCancel}
-          onOk={onOk}
-          cancelButtonText={cancelButtonText}
-          submitButtonText={submitButtonText}
-        />
       </div>
       <DateDisplay
           vacationDaysByIndex={vacationDaysByIndex}

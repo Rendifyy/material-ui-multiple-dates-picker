@@ -40,6 +40,7 @@ const DatePicker = ({
   readOnly,
   onCancel,
   onSubmit,
+    onChange,
   selectedDates: outerSelectedDates,
   disabledDates,
   cancelButtonText,
@@ -57,9 +58,7 @@ const DatePicker = ({
   // Tekitame aegadest topelt halduse - Komponenti antakse kasutaja puhke kellaajad
   // Kui aga valitud päev on halfDisabledDate - siis näitame algus kella hoopis selle järgi
   const [timesInternal, setTimesInternal] = useState(times || [])
-  const [noticeTxt, setNoticeTxt] = useState(chooseMulti
-      ? 'Vali kõik renditavad päevad. Rendi algus ja lõpp ei tohi olla puhkepäeval.'
-      : '') // Evar tahtis et default msg oleks see.
+
   const [outterChosenStartTs, setChosenOuterStartTs] = React.useState(null);
   const [outterChosenEndTs, setChosenOuterEndTs] = React.useState(null);
 
@@ -103,7 +102,7 @@ const DatePicker = ({
           dispatch({type: 'setSelectedDates', payload: selectedDatesPayload})
         }
 
-        // RENDIFY LOGIC BEGIN
+        /*// RENDIFY LOGIC BEGIN
         // On toote kella ajad ning on ka renditud päevad
         if (times && halfDisabledDates) {
           const anyHalfRentDay = halfDisabledDates.find(
@@ -133,8 +132,9 @@ const DatePicker = ({
           }
         } else {
           return; // Pole bronnitud päevi ja kuupäevad on juba on init paika pandud.
-        }
+        }*/
 
+        onChange(selectedDatesPayload);
       },
       [selectedDates, dispatch, readOnly, halfDisabledDates, times]
   )
@@ -154,23 +154,23 @@ const DatePicker = ({
       [selectedDates, dispatch, readOnly]
   )
 
-  const dismiss = useCallback(
+  /*const dismiss = useCallback(
       () => {
         dispatch({type: 'setSelectedDates', payload: []})
         onCancel()
       },
       [dispatch, onCancel]
-  )
+  )*/
 
-  const handleCancel = useCallback(
+  /*const handleCancel = useCallback(
       e => {
         e.preventDefault()
         dismiss()
       },
       [dismiss]
-  )
+  )*/
 
-  const handleOk = useCallback(
+  /*const handleOk = useCallback(
       e => {
         e.preventDefault()
         if (readOnly) {
@@ -212,20 +212,20 @@ const DatePicker = ({
           return reset();
         }
 
-        /* validation 1 */
+        /!* validation 1 *!/
         if (chooseMulti && (selectedDates.length === 0 || selectedDates.length
             === 1)) {
           setNoticeTxt("Rentija minimaalne rendi aeg on 1 ööpäev.");
           return reset();
         }
 
-        /* validation 2 */
+        /!* validation 2 *!/
         if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
           setNoticeTxt("Vali ka rendi algus ja lõpp kellaajad.");
           return reset();
         }
 
-        /* validation 3 */
+        /!* validation 3 *!/
         if (chooseMulti === false) {
           if (selectedDates.length > 1) {
             setNoticeTxt("Vali ainult üks päev");
@@ -239,7 +239,7 @@ const DatePicker = ({
         }
 
         if (!disableClock) {
-          /* validation 4 */
+          /!* validation 4 *!/
           const sortedDates = sortDate(selectedDates); // järjekorda ja vaatame et päevade vahel ei oleks tühjust.
           let triggered = false;
 
@@ -269,7 +269,7 @@ const DatePicker = ({
       },
       [onSubmit, selectedDates, readOnly, outterChosenEndTs,
         outterChosenStartTs, chooseMulti, chooseMulti]
-  )
+  )*/
 
   useEffect(
       () => {
@@ -284,8 +284,6 @@ const DatePicker = ({
   )
 
   return (
-      <Dialog open={open} classes={{paper: classes.dialogPaper}}>
-        {/* <DialogContent> */}
         <Calendar
             selectedDates={selectedDates}
             disabledDates={disabledDates}
@@ -294,22 +292,17 @@ const DatePicker = ({
             onRemoveAtIndex={onRemoveAtIndex}
             minDate={minDate}
             maxDate={maxDate}
-            onCancel={handleCancel}
-            onOk={handleOk}
             readOnly={readOnly}
             disableClock={disableClock}
             cancelButtonText={cancelButtonText}
             submitButtonText={submitButtonText}
             selectedDatesTitle={selectedDatesTitle}
             times={timesInternal}
-            noticeTxt={noticeTxt}
             selectedStartTs={selectedStartTs}
             selectedEndTs={selectedEndTs}
             vacationDaysByIndex={vacationDaysByIndex}
             setOuterStartEndTs={setOuterStartEndTs}
         />
-        {/* </DialogContent> */}
-      </Dialog>
   )
 }
 

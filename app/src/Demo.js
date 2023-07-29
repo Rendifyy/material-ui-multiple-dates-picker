@@ -68,6 +68,9 @@ const Demo = props => {
         disabledDatesTitle={"Broneeritud päevad"}
         onSubmit={onSubmit}
         chooseMulti={true}
+        onChange={(days) => {
+          alert(JSON.stringify(days))
+        }}
         selectedStartTs={selectedStartTs}
         disabledDates={[tomorrowLater3]}
         selectedEndTs={selectedEndTs}

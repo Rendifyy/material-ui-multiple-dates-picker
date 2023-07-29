@@ -65,9 +65,6 @@ class DateDisplay extends Component {
 
     return (
       <div className={classes.root}>
-        {vacationDaysByIndex.length && <div className={classes.header}>
-          <Typography variant='subtitle1'><b>Puhkepäevad</b>: {vacationDaysByIndex.map(e => estonian[e]).join(', ')}</Typography>
-        </div>}
         <div className={classes.header}>
           <Typography variant='subtitle1'>{this.props.selectedDatesTitle}</Typography>
           <Typography variant='subtitle1' color={readOnly ? 'textSecondary' : 'primary'}>
