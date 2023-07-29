@@ -131,9 +131,13 @@ function (_Component) {
           readOnly = _this$props.readOnly,
           disabledDatesTitle = _this$props.disabledDatesTitle,
           disabledDates = _this$props.disabledDates,
-          vacationDaysByIndex = _this$props.vacationDaysByIndex;
+          vacationDaysByIndex = _this$props.vacationDaysByIndex,
+          bgColor = _this$props.bgColor;
       return _react["default"].createElement("div", {
-        className: classes.root
+        className: classes.root,
+        style: {
+          background: bgColor
+        }
       }, _react["default"].createElement("div", {
         className: classes.header
       }, _react["default"].createElement(_core.Typography, {

@@ -88,6 +88,7 @@ var Calendar = function Calendar(_ref) {
       selectedDates = _ref.selectedDates,
       disabledDates = _ref.disabledDates,
       onSelect = _ref.onSelect,
+      bgColor = _ref.bgColor,
       vacationDaysByIndex = _ref.vacationDaysByIndex,
       readOnly = _ref.readOnly,
       onRemoveAtIndex = _ref.onRemoveAtIndex,
@@ -167,6 +168,7 @@ var Calendar = function Calendar(_ref) {
     readOnly: readOnly,
     ref: calendar
   }))), _react["default"].createElement(_DateDisplay["default"], {
+    bgColor: bgColor,
     vacationDaysByIndex: vacationDaysByIndex,
     selectedDatesTitle: selectedDatesTitle,
     disabledDatesTitle: disabledDatesTitle,

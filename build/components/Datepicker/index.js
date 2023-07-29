@@ -93,10 +93,10 @@ var DatePicker = function DatePicker(_ref) {
       _ref$selectedDatesTit = _ref.selectedDatesTitle,
       selectedDatesTitle = _ref$selectedDatesTit === void 0 ? 'Selected Dates' : _ref$selectedDatesTit,
       disabledDatesTitle = _ref.disabledDatesTitle,
-      disableClock = _ref.disableClock,
       times = _ref.times,
       halfDisabledDates = _ref.halfDisabledDates,
       chooseMulti = _ref.chooseMulti,
+      bgColor = _ref.bgColor,
       selectedStartTs = _ref.selectedStartTs,
       selectedEndTs = _ref.selectedEndTs,
       vacationDaysByIndex = _ref.vacationDaysByIndex;
@@ -318,6 +318,7 @@ var DatePicker = function DatePicker(_ref) {
     }
   }, [open, outerSelectedDates]);
   return _react["default"].createElement(_Calendar["default"], {
+    bgColor: bgColor,
     selectedDates: selectedDates,
     disabledDates: disabledDates,
     disabledDatesTitle: disabledDatesTitle,
@@ -326,7 +327,6 @@ var DatePicker = function DatePicker(_ref) {
     minDate: minDate,
     maxDate: maxDate,
     readOnly: readOnly,
-    disableClock: disableClock,
     cancelButtonText: cancelButtonText,
     submitButtonText: submitButtonText,
     selectedDatesTitle: selectedDatesTitle,
@@ -341,19 +341,14 @@ var DatePicker = function DatePicker(_ref) {
 DatePicker.propTypes = {
   open: _propTypes["default"].bool.isRequired,
   readOnly: _propTypes["default"].bool,
-  onCancel: _propTypes["default"].func.isRequired,
-  onSubmit: _propTypes["default"].func.isRequired,
   selectedDates: _propTypes["default"].array,
-  cancelButtonText: _propTypes["default"].string,
-  submitButtonText: _propTypes["default"].string,
   selectedDatesTitle: _propTypes["default"].string,
   disabledDatesTitle: _propTypes["default"].string,
-  disableClock: _propTypes["default"].bool,
   halfDisabledDates: _propTypes["default"].array,
-  times: _propTypes["default"].array,
   chooseMulti: _propTypes["default"].bool,
   selectedStartTs: _propTypes["default"].string,
-  selectedEndTs: _propTypes["default"].string
+  selectedEndTs: _propTypes["default"].string,
+  bgColor: _propTypes["default"].string
 };
 var _default = DatePicker;
 exports["default"] = _default;

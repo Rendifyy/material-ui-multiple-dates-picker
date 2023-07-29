@@ -55,6 +55,7 @@ const Calendar = ({
                     selectedDates,
                     disabledDates,
                     onSelect,
+  bgColor,
   vacationDaysByIndex,
                     readOnly,
                     onRemoveAtIndex,
@@ -137,7 +138,8 @@ const Calendar = ({
         </div>
       </div>
       <DateDisplay
-          vacationDaysByIndex={vacationDaysByIndex}
+        bgColor={bgColor}
+        vacationDaysByIndex={vacationDaysByIndex}
         selectedDatesTitle={selectedDatesTitle}
         disabledDatesTitle={disabledDatesTitle}
         selectedDates={selectedDates}

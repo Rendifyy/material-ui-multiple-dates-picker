@@ -47,10 +47,10 @@ const DatePicker = ({
   submitButtonText = 'Submit',
   selectedDatesTitle = 'Selected Dates',
   disabledDatesTitle,
-  disableClock,
   times,
   halfDisabledDates,
   chooseMulti,
+    bgColor,
   selectedStartTs,
   selectedEndTs,
   vacationDaysByIndex,
@@ -285,6 +285,7 @@ const DatePicker = ({
 
   return (
         <Calendar
+            bgColor={bgColor}
             selectedDates={selectedDates}
             disabledDates={disabledDates}
             disabledDatesTitle={disabledDatesTitle}
@@ -293,7 +294,6 @@ const DatePicker = ({
             minDate={minDate}
             maxDate={maxDate}
             readOnly={readOnly}
-            disableClock={disableClock}
             cancelButtonText={cancelButtonText}
             submitButtonText={submitButtonText}
             selectedDatesTitle={selectedDatesTitle}
@@ -309,19 +309,14 @@ const DatePicker = ({
 DatePicker.propTypes = {
   open: PropTypes.bool.isRequired,
   readOnly: PropTypes.bool,
-  onCancel: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   selectedDates: PropTypes.array,
-  cancelButtonText: PropTypes.string,
-  submitButtonText: PropTypes.string,
   selectedDatesTitle: PropTypes.string,
   disabledDatesTitle: PropTypes.string,
-  disableClock: PropTypes.bool,
   halfDisabledDates: PropTypes.array,
-  times: PropTypes.array,
   chooseMulti: PropTypes.bool,
   selectedStartTs: PropTypes.string,
-  selectedEndTs: PropTypes.string
+  selectedEndTs: PropTypes.string,
+  bgColor: PropTypes.string
 }
 
 export default DatePicker

@@ -55,14 +55,14 @@ const Demo = props => {
   const tomorrowEarly = new Date(earlier);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{background: '#c1e8d780'}}>
       <Button variant='contained' color='primary' className={classes.button} onClick={toggleOpen}>
         Select Dates
       </Button>
       <MultipleDatePicker
         open={open}
         selectedDates={dates}
-        disableClock={false}
+        bgColor={'#c1e8d780'}
         onCancel={onCancel}
         selectedDatesTitle={"Valitud rendipäevad"}
         disabledDatesTitle={"Broneeritud päevad"}
