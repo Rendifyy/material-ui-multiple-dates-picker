@@ -133,6 +133,11 @@ function (_Component) {
           disabledDates = _this$props.disabledDates,
           vacationDaysByIndex = _this$props.vacationDaysByIndex,
           bgColor = _this$props.bgColor;
+
+      if (disabledDates.length === 0) {
+        return null;
+      }
+
       return _react["default"].createElement("div", {
         className: classes.root,
         style: {
@@ -142,10 +147,7 @@ function (_Component) {
         className: classes.header
       }, _react["default"].createElement(_core.Typography, {
         variant: "subtitle1"
-      }, this.props.disabledDatesTitle), _react["default"].createElement(_core.Typography, {
-        variant: "subtitle1",
-        color: readOnly ? 'textSecondary' : 'primary'
-      }, disabledDates.length, "e")), _react["default"].createElement(_core.List, {
+      }, this.props.disabledDatesTitle)), _react["default"].createElement(_core.List, {
         dense: true,
         className: classes.list
       }, disabledDates.map(function (date, index) {

@@ -63,6 +63,11 @@ class DateDisplay extends Component {
   render() {
     const {classes, selectedDates, readOnly, disabledDatesTitle, disabledDates, vacationDaysByIndex, bgColor} = this.props
 
+
+    if(disabledDates.length === 0) {
+      return null;
+    }
+
     return (
       <div className={classes.root} style={{background: bgColor}}>
 
@@ -70,9 +75,6 @@ class DateDisplay extends Component {
         <>
           <div className={classes.header}>
             <Typography variant='subtitle1'>{this.props.disabledDatesTitle}</Typography>
-            <Typography variant='subtitle1' color={readOnly ? 'textSecondary' : 'primary'}>
-              {disabledDates.length}e
-            </Typography>
           </div>
           <List dense className={classes.list}>
             {disabledDates.map((date, index) => (
