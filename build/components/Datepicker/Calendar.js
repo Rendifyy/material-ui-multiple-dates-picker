@@ -88,18 +88,12 @@ var Calendar = function Calendar(_ref) {
       selectedDates = _ref.selectedDates,
       disabledDates = _ref.disabledDates,
       onSelect = _ref.onSelect,
-      onCancel = _ref.onCancel,
       vacationDaysByIndex = _ref.vacationDaysByIndex,
-      onOk = _ref.onOk,
       readOnly = _ref.readOnly,
       onRemoveAtIndex = _ref.onRemoveAtIndex,
-      cancelButtonText = _ref.cancelButtonText,
-      submitButtonText = _ref.submitButtonText,
       selectedDatesTitle = _ref.selectedDatesTitle,
       disabledDatesTitle = _ref.disabledDatesTitle,
-      disableClock = _ref.disableClock,
       times = _ref.times,
-      noticeTxt = _ref.noticeTxt,
       setOuterStartEndTs = _ref.setOuterStartEndTs,
       selectedStartTs = _ref.selectedStartTs,
       selectedEndTs = _ref.selectedEndTs;
@@ -156,13 +150,7 @@ var Calendar = function Calendar(_ref) {
     className: classes.selectorContainer
   }, _react["default"].createElement("div", {
     className: classes.calendarContainer
-  }, noticeTxt && _react["default"].createElement("div", {
-    className: classes.infoContainer
-  }, _react["default"].createElement("p", null, _react["default"].createElement(_Info["default"], {
-    className: classes.infoIcon
-  }), _react["default"].createElement("span", {
-    className: classes.infoTxt
-  }, noticeTxt))), _react["default"].createElement(_CalendarToolbar["default"], {
+  }, _react["default"].createElement(_CalendarToolbar["default"], {
     displayDate: displayDate,
     onMonthChange: handleMonthChange,
     prevMonth: toolbarInteractions.prevMonth,
@@ -178,53 +166,7 @@ var Calendar = function Calendar(_ref) {
     onSelect: onSelect,
     readOnly: readOnly,
     ref: calendar
-  }), !disableClock && _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_FormControl["default"], null, _react["default"].createElement(_Select["default"], {
-    id: "start-select-outlined",
-    value: chosenStartTs,
-    onChange: function onChange(event) {
-      // Value has to be a primitive (number, string)
-      // Otherwise changes are not reflected to UI
-      var val = event.target.value;
-
-      if (val !== 100) {
-        setChosenStartTs(val);
-      }
-    },
-    label: "Algusaeg"
-  }, _react["default"].createElement(_MenuItem["default"], {
-    value: 100
-  }, _react["default"].createElement("em", null, "Algusaeg")), times.map(function (e, i) {
-    return _react["default"].createElement(_MenuItem["default"], {
-      key: "time".concat(e.id),
-      value: i
-    }, (0, _moment["default"])(e).format('HH:mm'));
-  }))), _react["default"].createElement("br", null), _react["default"].createElement(_FormControl["default"], null, _react["default"].createElement(_Select["default"], {
-    id: "end-select-outlined",
-    value: chosenEndTs,
-    onChange: function onChange(event) {
-      // Value has to be a primitive (number, string)
-      // Otherwise changes are not reflected to UI
-      var val = event.target.value;
-
-      if (val !== 100) {
-        setChosenEndTs(val);
-      }
-    },
-    label: "Tagastus kellaaeg"
-  }, _react["default"].createElement(_MenuItem["default"], {
-    value: 100
-  }, _react["default"].createElement("em", null, "Tagastus kellaaeg")), times.map(function (e, i) {
-    return _react["default"].createElement(_MenuItem["default"], {
-      key: "time".concat(e.id),
-      value: i
-    }, (0, _moment["default"])(e).format('HH:mm'));
-  }))))), _react["default"].createElement(_CalendarButtons["default"], {
-    readOnly: readOnly,
-    onCancel: onCancel,
-    onOk: onOk,
-    cancelButtonText: cancelButtonText,
-    submitButtonText: submitButtonText
-  })), _react["default"].createElement(_DateDisplay["default"], {
+  }))), _react["default"].createElement(_DateDisplay["default"], {
     vacationDaysByIndex: vacationDaysByIndex,
     selectedDatesTitle: selectedDatesTitle,
     disabledDatesTitle: disabledDatesTitle,

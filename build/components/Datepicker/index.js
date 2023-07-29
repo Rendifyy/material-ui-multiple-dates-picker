@@ -84,6 +84,7 @@ var DatePicker = function DatePicker(_ref) {
       readOnly = _ref.readOnly,
       onCancel = _ref.onCancel,
       onSubmit = _ref.onSubmit,
+      onChange = _ref.onChange,
       outerSelectedDates = _ref.selectedDates,
       disabledDates = _ref.disabledDates,
       cancelButtonText = _ref.cancelButtonText,
@@ -106,12 +107,6 @@ var DatePicker = function DatePicker(_ref) {
       _useState2 = _slicedToArray(_useState, 2),
       timesInternal = _useState2[0],
       setTimesInternal = _useState2[1];
-
-  var _useState3 = (0, _react.useState)(chooseMulti ? 'Vali kõik renditavad päevad. Rendi algus ja lõpp ei tohi olla puhkepäeval.' : ''),
-      _useState4 = _slicedToArray(_useState3, 2),
-      noticeTxt = _useState4[0],
-      setNoticeTxt = _useState4[1]; // Evar tahtis et default msg oleks see.
-
 
   var _React$useState = _react["default"].useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -163,42 +158,39 @@ var DatePicker = function DatePicker(_ref) {
         type: 'setSelectedDates',
         payload: selectedDatesPayload
       });
-    } // RENDIFY LOGIC BEGIN
+    }
+    /*// RENDIFY LOGIC BEGIN
     // On toote kella ajad ning on ka renditud päevad
-
-
     if (times && halfDisabledDates) {
-      var anyHalfRentDay = halfDisabledDates.find(function (half) {
-        return selectedDatesPayload.find(function (sel) {
-          return _utils["default"].isSameDay(sel, half);
-        });
-      });
-
+      const anyHalfRentDay = halfDisabledDates.find(
+          half => selectedDatesPayload.find(
+              (sel => DateUtilities.isSameDay(sel, half))));
       if (anyHalfRentDay) {
-        var startTs, endTs; // for Date.prototype And Moment jS
-
+        let startTs, endTs;
+        // for Date.prototype And Moment jS
         try {
           //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
-          startTs = anyHalfRentDay; // + 1 on ajabuhver peale renditagastust.
+          startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
         } catch (e) {
           //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
-          startTs = anyHalfRentDay; // + 1 on ajabuhver peale renditagastust.
+          startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
         }
-
-        try {
+         try {
           endTs = times[times.length - 1];
         } catch (e) {
           endTs = times[times.length - 1];
-        } // Arvutame uue alguse kuupäev rendi päeva pealt.
-
-
-        setTimesInternal((0, _rendifyHelper.getListForStartAndEndTs)(startTs, endTs));
+        }
+         // Arvutame uue alguse kuupäev rendi päeva pealt.
+        setTimesInternal(getListForStartAndEndTs(startTs, endTs));
       } else {
-        setTimesInternal(times);
+        setTimesInternal(times)
       }
     } else {
       return; // Pole bronnitud päevi ja kuupäevad on juba on init paika pandud.
-    }
+    }*/
+
+
+    onChange(selectedDatesPayload);
   }, [selectedDates, dispatch, readOnly, halfDisabledDates, times]);
   var onRemoveAtIndex = (0, _react.useCallback)(function (index) {
     if (readOnly) {
@@ -216,122 +208,107 @@ var DatePicker = function DatePicker(_ref) {
       payload: newDates
     });
   }, [selectedDates, dispatch, readOnly]);
-  var dismiss = (0, _react.useCallback)(function () {
-    dispatch({
-      type: 'setSelectedDates',
-      payload: []
-    });
-    onCancel();
-  }, [dispatch, onCancel]);
-  var handleCancel = (0, _react.useCallback)(function (e) {
-    e.preventDefault();
-    dismiss();
-  }, [dismiss]);
-  var handleOk = (0, _react.useCallback)(function (e) {
-    e.preventDefault();
+  /*const dismiss = useCallback(
+      () => {
+        dispatch({type: 'setSelectedDates', payload: []})
+        onCancel()
+      },
+      [dispatch, onCancel]
+  )*/
 
-    if (readOnly) {
-      return;
-    }
+  /*const handleCancel = useCallback(
+      e => {
+        e.preventDefault()
+        dismiss()
+      },
+      [dismiss]
+  )*/
 
-    var reset = function reset() {
-      setTimeout(function () {
-        setNoticeTxt('');
-      }, 3000);
-    };
-
-    if (selectedDates.length) {
-      var lastDayChosen = selectedDates[selectedDates.length - 1].getDay();
-
-      if (vacationDaysByIndex.includes(lastDayChosen)) {
-        setNoticeTxt("Lõpp päev on puhkepäeval.");
-        return reset();
-      }
-    }
-
-    if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
-      setNoticeTxt("Kellaajad valimata.");
-      return reset();
-    } // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
-    // ja võrdleme praeguse hetkega. Kui praegune hetk on pärast algusaega, siis on järelikult minevik.
-
-
-    var withFormattedTime = selectedDates.map(function (e) {
-      var formattedHours = (0, _moment["default"])(e).set({
-        hour: (0, _moment["default"])(outterChosenStartTs).get('hour'),
-        minute: (0, _moment["default"])(outterChosenStartTs).get('minute')
-      });
-      return formattedHours;
-    });
-
-    if (withFormattedTime.find(function (e) {
-      return (0, _moment["default"])().isAfter((0, _moment["default"])(e));
-    })) {
-      setNoticeTxt("Kuupäev on minevikus.");
-      return reset();
-    }
-    /* validation 1 */
-
-
-    if (chooseMulti && (selectedDates.length === 0 || selectedDates.length === 1)) {
-      setNoticeTxt("Rentija minimaalne rendi aeg on 1 ööpäev.");
-      return reset();
-    }
-    /* validation 2 */
-
-
-    if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
-      setNoticeTxt("Vali ka rendi algus ja lõpp kellaajad.");
-      return reset();
-    }
-    /* validation 3 */
-
-
-    if (chooseMulti === false) {
-      if (selectedDates.length > 1) {
-        setNoticeTxt("Vali ainult üks päev");
-        return reset();
-      }
-
-      if ((0, _moment["default"])(outterChosenEndTs).isBefore(outterChosenStartTs)) {
-        setNoticeTxt("Alguse kellaaeg on hiljem kui lõpu.");
-        return reset();
-      }
-    }
-
-    if (!disableClock) {
-      /* validation 4 */
-      var sortedDates = (0, _rendifyHelper.sortDate)(selectedDates); // järjekorda ja vaatame et päevade vahel ei oleks tühjust.
-
-      var triggered = false;
-      sortedDates.forEach(function (sd, i) {
-        if (triggered) {
-          return;
+  /*const handleOk = useCallback(
+      e => {
+        e.preventDefault()
+        if (readOnly) {
+          return
         }
-
-        var chosen = sd;
-        var nextChosen = sortedDates[i + 1];
-
-        var duration = _moment["default"].duration((0, _moment["default"])(nextChosen).diff((0, _moment["default"])(chosen)));
-
-        if (nextChosen && duration.asDays() > 1) {
-          triggered = true;
-          setNoticeTxt("Päevade vahel ei tohi olla tühja päeva.");
+         const reset = () => {
+          setTimeout(() => {
+            setNoticeTxt('');
+          }, 3000);
+        }
+         if (selectedDates.length) {
+          const lastDayChosen = selectedDates[selectedDates.length - 1].getDay();
+          if(vacationDaysByIndex.includes(lastDayChosen)) {
+            setNoticeTxt("Lõpp päev on puhkepäeval.");
+            return reset();
+          }
+        }
+         if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
+          setNoticeTxt("Kellaajad valimata.");
           return reset();
         }
-      });
+          // valitud kuupäevadel on kellaeg muidu 00:00. Panen kõigile algusajaks selectedStartTs.
+        // ja võrdleme praeguse hetkega. Kui praegune hetk on pärast algusaega, siis on järelikult minevik.
+        const withFormattedTime = selectedDates.map((e) => {
+          const formattedHours = moment(e).set({
+            hour: moment(outterChosenStartTs).get('hour'),
+            minute: moment(outterChosenStartTs).get('minute'),
+          })
+          return formattedHours;
+        });
+         if (withFormattedTime.find(e => moment().isAfter(moment(e)))) {
+          setNoticeTxt("Kuupäev on minevikus.");
+          return reset();
+        }
+         /!* validation 1 *!/
+        if (chooseMulti && (selectedDates.length === 0 || selectedDates.length
+            === 1)) {
+          setNoticeTxt("Rentija minimaalne rendi aeg on 1 ööpäev.");
+          return reset();
+        }
+         /!* validation 2 *!/
+        if (!disableClock && (!outterChosenStartTs || !outterChosenEndTs)) {
+          setNoticeTxt("Vali ka rendi algus ja lõpp kellaajad.");
+          return reset();
+        }
+         /!* validation 3 *!/
+        if (chooseMulti === false) {
+          if (selectedDates.length > 1) {
+            setNoticeTxt("Vali ainult üks päev");
+            return reset();
+          }
+           if (moment(outterChosenEndTs).isBefore(outterChosenStartTs)) {
+            setNoticeTxt("Alguse kellaaeg on hiljem kui lõpu.");
+            return reset();
+          }
+        }
+         if (!disableClock) {
+          /!* validation 4 *!/
+          const sortedDates = sortDate(selectedDates); // järjekorda ja vaatame et päevade vahel ei oleks tühjust.
+          let triggered = false;
+           sortedDates.forEach((sd, i) => {
+            if (triggered) {
+              return;
+            }
+             const chosen = sd;
+            const nextChosen = sortedDates[i + 1];
+            const duration = moment.duration(
+                moment(nextChosen).diff(moment(chosen)));
+             if (nextChosen && duration.asDays() > 1) {
+              triggered = true;
+              setNoticeTxt("Päevade vahel ei tohi olla tühja päeva.");
+              return reset();
+            }
+          });
+           if (triggered) {
+            return;
+          }
+        }
+         onSubmit({selectedDates, outterChosenStartTs, outterChosenEndTs})
+      },
+      [onSubmit, selectedDates, readOnly, outterChosenEndTs,
+        outterChosenStartTs, chooseMulti, chooseMulti]
+  )*/
 
-      if (triggered) {
-        return;
-      }
-    }
-
-    onSubmit({
-      selectedDates: selectedDates,
-      outterChosenStartTs: outterChosenStartTs,
-      outterChosenEndTs: outterChosenEndTs
-    });
-  }, [onSubmit, selectedDates, readOnly, outterChosenEndTs, outterChosenStartTs, chooseMulti, chooseMulti]);
   (0, _react.useEffect)(function () {
     if (open) {
       dispatch({
@@ -340,12 +317,7 @@ var DatePicker = function DatePicker(_ref) {
       });
     }
   }, [open, outerSelectedDates]);
-  return _react["default"].createElement(_core.Dialog, {
-    open: open,
-    classes: {
-      paper: classes.dialogPaper
-    }
-  }, _react["default"].createElement(_Calendar["default"], {
+  return _react["default"].createElement(_Calendar["default"], {
     selectedDates: selectedDates,
     disabledDates: disabledDates,
     disabledDatesTitle: disabledDatesTitle,
@@ -353,20 +325,17 @@ var DatePicker = function DatePicker(_ref) {
     onRemoveAtIndex: onRemoveAtIndex,
     minDate: minDate,
     maxDate: maxDate,
-    onCancel: handleCancel,
-    onOk: handleOk,
     readOnly: readOnly,
     disableClock: disableClock,
     cancelButtonText: cancelButtonText,
     submitButtonText: submitButtonText,
     selectedDatesTitle: selectedDatesTitle,
     times: timesInternal,
-    noticeTxt: noticeTxt,
     selectedStartTs: selectedStartTs,
     selectedEndTs: selectedEndTs,
     vacationDaysByIndex: vacationDaysByIndex,
     setOuterStartEndTs: setOuterStartEndTs
-  }));
+  });
 };
 
 DatePicker.propTypes = {

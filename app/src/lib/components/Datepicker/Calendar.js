@@ -112,7 +112,7 @@ const Calendar = ({
   }
 
   return (
-    <div className={classes.root} style={{border: '1px solid black'}}>
+    <div className={classes.root}>
       <div className={classes.selectorContainer}>
         <div className={classes.calendarContainer}>
           <CalendarToolbar

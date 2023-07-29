@@ -134,13 +134,7 @@ function (_Component) {
           vacationDaysByIndex = _this$props.vacationDaysByIndex;
       return _react["default"].createElement("div", {
         className: classes.root
-      }, vacationDaysByIndex.length && _react["default"].createElement("div", {
-        className: classes.header
-      }, _react["default"].createElement(_core.Typography, {
-        variant: "subtitle1"
-      }, _react["default"].createElement("b", null, "Puhkep\xE4evad"), ": ", vacationDaysByIndex.map(function (e) {
-        return estonian[e];
-      }).join(', '))), _react["default"].createElement("div", {
+      }, _react["default"].createElement("div", {
         className: classes.header
       }, _react["default"].createElement(_core.Typography, {
         variant: "subtitle1"
