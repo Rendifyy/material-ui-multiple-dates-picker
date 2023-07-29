@@ -98,26 +98,6 @@ var Calendar = function Calendar(_ref) {
       setOuterStartEndTs = _ref.setOuterStartEndTs,
       selectedStartTs = _ref.selectedStartTs,
       selectedEndTs = _ref.selectedEndTs;
-
-  var _React$useState = _react["default"].useState(selectedStartTs),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      chosenStartTs = _React$useState2[0],
-      setChosenStartTs = _React$useState2[1];
-
-  var _React$useState3 = _react["default"].useState(selectedEndTs),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      chosenEndTs = _React$useState4[0],
-      setChosenEndTs = _React$useState4[1];
-
-  (0, _react.useEffect)(function () {
-    if (times.indexOf(selectedEndTs) !== -1) {
-      setChosenEndTs(times.indexOf(selectedEndTs));
-    }
-
-    if (times.indexOf(selectedStartTs) !== -1) {
-      setChosenStartTs(times.indexOf(selectedStartTs));
-    }
-  }, []);
   var calendar = (0, _react.useRef)(null);
   var classes = useStyles();
 
@@ -136,9 +116,6 @@ var Calendar = function Calendar(_ref) {
   (0, _react.useEffect)(function () {
     setDisplayDate(_dateUtils.defaultUtils.getFirstDayOfMonth(initialDate || new Date()));
   }, [initialDate]);
-  (0, _react.useEffect)(function () {
-    setOuterStartEndTs(times[chosenStartTs], times[chosenEndTs]);
-  }, [chosenEndTs, chosenStartTs, setOuterStartEndTs, times]);
   maxDate = maxDate || _dateUtils.defaultUtils.addYears(new Date(), 100);
   minDate = minDate || _dateUtils.defaultUtils.addYears(new Date(), -100);
   var toolbarInteractions = {

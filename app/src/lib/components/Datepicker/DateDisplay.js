@@ -1,6 +1,11 @@
 import React, {Component} from 'react'
-import {List, ListItem, ListItemText, Typography, withStyles} from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Clear'
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  withStyles
+} from '@material-ui/core'
 import moment from 'moment'
 
 const styles = theme => ({
@@ -33,6 +38,7 @@ const estonian = {
   5: 'R',
   6: 'L'
 };
+
 class DateDisplay extends Component {
   state = {
     selectedYear: false
@@ -61,36 +67,42 @@ class DateDisplay extends Component {
   }
 
   render() {
-    const {classes, selectedDates, readOnly, disabledDatesTitle, disabledDates, vacationDaysByIndex, bgColor} = this.props
+    const {
+      classes,
+      readOnly,
+      disabledDatesTitle,
+      disabledDates,
+      bgColor
+    } = this.props
 
-
-    if(disabledDates.length === 0) {
+    if (disabledDates.length === 0) {
       return null;
     }
 
     return (
-      <div className={classes.root} style={{background: bgColor}}>
+        <div className={classes.root} style={{background: bgColor}}>
 
-        {disabledDatesTitle &&
-        <>
-          <div className={classes.header}>
-            <Typography variant='subtitle1'>{this.props.disabledDatesTitle}</Typography>
-          </div>
-          <List dense className={classes.list}>
-            {disabledDates.map((date, index) => (
-              <ListItem
-                key={`${date.toString()}`}
-                button={readOnly}
-                disabled={readOnly}
-                onClick={this.removeDateAtIndex(index)}
-              >
-                <ListItemText primary={this.getFormatedDate(date)}/>
-              </ListItem>
-            ))}
-          </List>
-        </>
-        }
-      </div>
+          {disabledDatesTitle &&
+              <>
+                <div className={classes.header}>
+                  <Typography
+                      variant='subtitle1'>{this.props.disabledDatesTitle}</Typography>
+                </div>
+                <List dense className={classes.list}>
+                  {disabledDates.map((date, index) => (
+                      <ListItem
+                          key={`${date.toString()}`}
+                          button={readOnly}
+                          disabled={readOnly}
+                          onClick={this.removeDateAtIndex(index)}
+                      >
+                        <ListItemText primary={this.getFormatedDate(date)}/>
+                      </ListItem>
+                  ))}
+                </List>
+              </>
+          }
+        </div>
     )
   }
 }

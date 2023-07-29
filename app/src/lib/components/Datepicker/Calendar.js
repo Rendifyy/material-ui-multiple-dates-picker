@@ -66,19 +66,6 @@ const Calendar = ({
                     selectedStartTs,
                     selectedEndTs
                   }) => {
-  const [chosenStartTs, setChosenStartTs] = React.useState(selectedStartTs);
-  const [chosenEndTs, setChosenEndTs] = React.useState(selectedEndTs);
-
-  useEffect(() => {
-    if(times.indexOf(selectedEndTs) !== -1) {
-      setChosenEndTs(times.indexOf(selectedEndTs))
-    }
-
-    if(times.indexOf(selectedStartTs) !== -1) {
-      setChosenStartTs(times.indexOf(selectedStartTs))
-    }
-  }, []);
-
   const calendar = useRef(null)
   const classes = useStyles();
 
@@ -99,10 +86,6 @@ const Calendar = ({
     },
     [initialDate]
   )
-
-  useEffect(() => {
-    setOuterStartEndTs(times[chosenStartTs], times[chosenEndTs]);
-  }, [chosenEndTs, chosenStartTs, setOuterStartEndTs, times])
 
   maxDate = maxDate || utils.addYears(new Date(), 100)
   minDate = minDate || utils.addYears(new Date(), -100)

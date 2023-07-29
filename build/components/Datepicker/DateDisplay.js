@@ -9,8 +9,6 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _core = require("@material-ui/core");
 
-var _Clear = _interopRequireDefault(require("@material-ui/icons/Clear"));
-
 var _moment = _interopRequireDefault(require("moment"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -127,11 +125,9 @@ function (_Component) {
 
       var _this$props = this.props,
           classes = _this$props.classes,
-          selectedDates = _this$props.selectedDates,
           readOnly = _this$props.readOnly,
           disabledDatesTitle = _this$props.disabledDatesTitle,
           disabledDates = _this$props.disabledDates,
-          vacationDaysByIndex = _this$props.vacationDaysByIndex,
           bgColor = _this$props.bgColor;
 
       if (disabledDates.length === 0) {
