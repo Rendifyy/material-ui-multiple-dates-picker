@@ -79,6 +79,19 @@ function reducer(state, action) {
   }
 }
 
+function computeDatesInRange(startDate, endDate) {
+  // Helper function to compute dates between two given dates (inclusive)
+  var datesInRange = [];
+  var current = new Date(startDate);
+
+  while (current <= endDate) {
+    datesInRange.push(new Date(current));
+    current.setDate(current.getDate() + 1);
+  }
+
+  return datesInRange;
+}
+
 var DatePicker = function DatePicker(_ref) {
   var open = _ref.open,
       readOnly = _ref.readOnly,
@@ -143,54 +156,78 @@ var DatePicker = function DatePicker(_ref) {
     }
 
     var selectedDatesPayload = [];
+    /* A) First date is chosen - choose the date */
 
-    if (_utils["default"].dateIn(selectedDates, day)) {
-      selectedDatesPayload = selectedDates.filter(function (date) {
-        return !_utils["default"].isSameDay(date, day);
-      });
-      dispatch({
-        type: 'setSelectedDates',
-        payload: selectedDatesPayload
-      });
-    } else {
-      selectedDatesPayload = [].concat(_toConsumableArray(selectedDates), [day]);
-      dispatch({
-        type: 'setSelectedDates',
-        payload: selectedDatesPayload
-      });
-    }
-    /*// RENDIFY LOGIC BEGIN
-    // On toote kella ajad ning on ka renditud päevad
-    if (times && halfDisabledDates) {
-      const anyHalfRentDay = halfDisabledDates.find(
-          half => selectedDatesPayload.find(
-              (sel => DateUtilities.isSameDay(sel, half))));
-      if (anyHalfRentDay) {
-        let startTs, endTs;
-        // for Date.prototype And Moment jS
+    /* B) Second date is chosen - Compute all the dates from A - B (include in between) - This logic only applies when second date is bigger than first selected. */
+
+    /* C) Second date is chosen - fallback TO (A) - reset dates , and choose it as only date */
+
+    /* D) Third date is chosen - Fallback to (B) - compute dates in between */
+
+    /* F) Third date is chosen - Is same as last date currently chosen - do nothing */
+
+    var findLatestDay = function findLatestDay(dates) {
+      // Find the maximum date in the array
+      var latestDate = new Date(Math.max.apply(null, dates));
+      return latestDate;
+    };
+
+    var isDateInArray = function isDateInArray(targetDate, dateArray) {
+      // Convert the targetDate to ISO date format (YYYY-MM-DD) for consistency
+      var formattedTargetDate = new Date(targetDate).toISOString().split('T')[0]; // Loop through the dateArray and check if the formattedTargetDate is present
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = dateArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var date = _step.value;
+          var formattedDate = new Date(date).toISOString().split('T')[0];
+
+          if (formattedDate === formattedTargetDate) {
+            return true;
+          }
+        } // If the loop completes without finding the date, return false
+
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
         try {
-          //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
-          startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
-        } catch (e) {
-          //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
-          startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
         }
-         try {
-          endTs = times[times.length - 1];
-        } catch (e) {
-          endTs = times[times.length - 1];
-        }
-         // Arvutame uue alguse kuupäev rendi päeva pealt.
-        setTimesInternal(getListForStartAndEndTs(startTs, endTs));
-      } else {
-        setTimesInternal(times)
       }
-    } else {
-      return; // Pole bronnitud päevi ja kuupäevad on juba on init paika pandud.
-    }*/
 
+      return false;
+    };
 
-    onChange(selectedDatesPayload);
+    if (selectedDates.length === 0) {
+      // A) First date is chosen - choose the date
+      selectedDatesPayload = [day]; // start listing
+    } else if (selectedDates.length >= 1 && day.getTime() > selectedDates[0].getTime()) {
+      // B) Second date is chosen - Compute all dates from A to B (inclusive)
+      var datesInRange = computeDatesInRange(selectedDates[0], day);
+      selectedDatesPayload = datesInRange;
+    } else if (day.getTime() < selectedDates[0].getTime()) {
+      // C) Second date is chosen - fallback to A - reset dates and choose it as the only date
+      selectedDatesPayload = [day]; // resets
+    } else if (day.getTime() === findLatestDay(selectedDates).getTime()) {
+      // same day is chosen;
+      return;
+    }
+
+    dispatch({
+      type: 'setSelectedDates',
+      payload: selectedDatesPayload
+    });
+    onChange([selectedDatesPayload[0], findLatestDay(selectedDatesPayload)]);
   }, [selectedDates, dispatch, readOnly, halfDisabledDates, times]);
   var onRemoveAtIndex = (0, _react.useCallback)(function (index) {
     if (readOnly) {

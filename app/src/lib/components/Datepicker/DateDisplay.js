@@ -65,31 +65,13 @@ class DateDisplay extends Component {
 
     return (
       <div className={classes.root} style={{background: bgColor}}>
-        <div className={classes.header}>
-          <Typography variant='subtitle1'>{this.props.selectedDatesTitle}</Typography>
-          <Typography variant='subtitle1' color={readOnly ? 'textSecondary' : 'primary'}>
-            {selectedDates.length}
-          </Typography>
-        </div>
-        <List dense className={classes.list}>
-          {selectedDates.map((date, index) => (
-            <ListItem
-              key={`${date.toString()}`}
-              button={readOnly}
-              disabled={readOnly}
-              onClick={this.removeDateAtIndex(index)}
-            >
-              <ListItemText primary={this.getFormatedDate(date)}/>
-              {!readOnly && <DeleteIcon color='error'/>}
-            </ListItem>
-          ))}
-        </List>
+
         {disabledDatesTitle &&
         <>
           <div className={classes.header}>
             <Typography variant='subtitle1'>{this.props.disabledDatesTitle}</Typography>
             <Typography variant='subtitle1' color={readOnly ? 'textSecondary' : 'primary'}>
-              {disabledDates.length}
+              {disabledDates.length}e
             </Typography>
           </div>
           <List dense className={classes.list}>

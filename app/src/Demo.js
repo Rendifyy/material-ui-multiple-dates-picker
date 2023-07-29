@@ -69,7 +69,6 @@ const Demo = props => {
         onSubmit={onSubmit}
         chooseMulti={true}
         onChange={(days) => {
-          alert(JSON.stringify(days))
         }}
         selectedStartTs={selectedStartTs}
         disabledDates={[tomorrowLater3]}

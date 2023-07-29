@@ -35,12 +35,23 @@ function reducer(state, action) {
   }
 }
 
+function computeDatesInRange(startDate, endDate) {
+  // Helper function to compute dates between two given dates (inclusive)
+  const datesInRange = [];
+  const current = new Date(startDate);
+  while (current <= endDate) {
+    datesInRange.push(new Date(current));
+    current.setDate(current.getDate() + 1);
+  }
+  return datesInRange;
+}
+
 const DatePicker = ({
   open,
   readOnly,
   onCancel,
   onSubmit,
-    onChange,
+  onChange,
   selectedDates: outerSelectedDates,
   disabledDates,
   cancelButtonText,
@@ -50,7 +61,7 @@ const DatePicker = ({
   times,
   halfDisabledDates,
   chooseMulti,
-    bgColor,
+  bgColor,
   selectedStartTs,
   selectedEndTs,
   vacationDaysByIndex,
@@ -80,6 +91,7 @@ const DatePicker = ({
     setChosenOuterEndTs(end);
   };
 
+
   const onSelect = useCallback(
       day => {
         if (readOnly) {
@@ -88,53 +100,53 @@ const DatePicker = ({
 
         let selectedDatesPayload = []
 
-        if (DateUtilities.dateIn(selectedDates, day)) {
-          selectedDatesPayload = selectedDates.filter(
-              date => !DateUtilities.isSameDay(date, day));
+        /* A) First date is chosen - choose the date */
+        /* B) Second date is chosen - Compute all the dates from A - B (include in between) - This logic only applies when second date is bigger than first selected. */
+        /* C) Second date is chosen - fallback TO (A) - reset dates , and choose it as only date */
+        /* D) Third date is chosen - Fallback to (B) - compute dates in between */
+        /* F) Third date is chosen - Is same as last date currently chosen - do nothing */
 
-          dispatch({
-            type: 'setSelectedDates',
-            payload: selectedDatesPayload
-          })
-        } else {
-          selectedDatesPayload = [...selectedDates, day];
-
-          dispatch({type: 'setSelectedDates', payload: selectedDatesPayload})
+        const findLatestDay = (dates) => {
+          // Find the maximum date in the array
+          const latestDate = new Date(Math.max.apply(null, dates));
+          return latestDate;
         }
 
-        /*// RENDIFY LOGIC BEGIN
-        // On toote kella ajad ning on ka renditud päevad
-        if (times && halfDisabledDates) {
-          const anyHalfRentDay = halfDisabledDates.find(
-              half => selectedDatesPayload.find(
-                  (sel => DateUtilities.isSameDay(sel, half))));
-          if (anyHalfRentDay) {
-            let startTs, endTs;
-            // for Date.prototype And Moment jS
-            try {
-              //startTs = moment().set('hours', anyHalfRentDay.getHours() + 1).set('minutes', 0)
-              startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
-            } catch (e) {
-              //startTs = moment().set('hours', anyHalfRentDay.hour() + 1).set('minutes', 0)
-              startTs = anyHalfRentDay // + 1 on ajabuhver peale renditagastust.
-            }
+        const isDateInArray = (targetDate, dateArray) => {
+          // Convert the targetDate to ISO date format (YYYY-MM-DD) for consistency
+          const formattedTargetDate = new Date(targetDate).toISOString().split('T')[0];
 
-            try {
-              endTs = times[times.length - 1];
-            } catch (e) {
-              endTs = times[times.length - 1];
+          // Loop through the dateArray and check if the formattedTargetDate is present
+          for (const date of dateArray) {
+            const formattedDate = new Date(date).toISOString().split('T')[0];
+            if (formattedDate === formattedTargetDate) {
+              return true;
             }
-
-            // Arvutame uue alguse kuupäev rendi päeva pealt.
-            setTimesInternal(getListForStartAndEndTs(startTs, endTs));
-          } else {
-            setTimesInternal(times)
           }
-        } else {
-          return; // Pole bronnitud päevi ja kuupäevad on juba on init paika pandud.
-        }*/
 
-        onChange(selectedDatesPayload);
+          // If the loop completes without finding the date, return false
+          return false;
+        }
+
+        if (selectedDates.length === 0) {
+          // A) First date is chosen - choose the date
+          selectedDatesPayload = [day]; // start listing
+        } else if (selectedDates.length >= 1 && day.getTime()
+            > selectedDates[0].getTime()) {
+          // B) Second date is chosen - Compute all dates from A to B (inclusive)
+          const datesInRange = computeDatesInRange(selectedDates[0], day);
+          selectedDatesPayload = datesInRange;
+        } else if (day.getTime() < selectedDates[0].getTime()) {
+          // C) Second date is chosen - fallback to A - reset dates and choose it as the only date
+          selectedDatesPayload = [day]; // resets
+        } else if (day.getTime() === findLatestDay(selectedDates).getTime()) {
+          // same day is chosen;
+          return;
+        }
+
+        dispatch({type: 'setSelectedDates', payload: selectedDatesPayload})
+        onChange(
+            [selectedDatesPayload[0], findLatestDay(selectedDatesPayload)]);
       },
       [selectedDates, dispatch, readOnly, halfDisabledDates, times]
   )
@@ -284,25 +296,25 @@ const DatePicker = ({
   )
 
   return (
-        <Calendar
-            bgColor={bgColor}
-            selectedDates={selectedDates}
-            disabledDates={disabledDates}
-            disabledDatesTitle={disabledDatesTitle}
-            onSelect={onSelect}
-            onRemoveAtIndex={onRemoveAtIndex}
-            minDate={minDate}
-            maxDate={maxDate}
-            readOnly={readOnly}
-            cancelButtonText={cancelButtonText}
-            submitButtonText={submitButtonText}
-            selectedDatesTitle={selectedDatesTitle}
-            times={timesInternal}
-            selectedStartTs={selectedStartTs}
-            selectedEndTs={selectedEndTs}
-            vacationDaysByIndex={vacationDaysByIndex}
-            setOuterStartEndTs={setOuterStartEndTs}
-        />
+      <Calendar
+          bgColor={bgColor}
+          selectedDates={selectedDates}
+          disabledDates={disabledDates}
+          disabledDatesTitle={disabledDatesTitle}
+          onSelect={onSelect}
+          onRemoveAtIndex={onRemoveAtIndex}
+          minDate={minDate}
+          maxDate={maxDate}
+          readOnly={readOnly}
+          cancelButtonText={cancelButtonText}
+          submitButtonText={submitButtonText}
+          selectedDatesTitle={selectedDatesTitle}
+          times={timesInternal}
+          selectedStartTs={selectedStartTs}
+          selectedEndTs={selectedEndTs}
+          vacationDaysByIndex={vacationDaysByIndex}
+          setOuterStartEndTs={setOuterStartEndTs}
+      />
   )
 }
 
