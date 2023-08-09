@@ -107,6 +107,15 @@ var DatePicker = function DatePicker(_ref) {
       return;
     }
 
+    if (!chooseMulti) {
+      dispatch({
+        type: 'setSelectedDates',
+        payload: [day]
+      });
+      onChange([day]);
+      return;
+    }
+
     var selectedDatesPayload = [];
     /* A) First date is chosen - choose the date */
 

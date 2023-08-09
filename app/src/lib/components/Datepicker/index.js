@@ -66,6 +66,12 @@ const DatePicker = ({
           return
         }
 
+        if(!chooseMulti) {
+          dispatch({type: 'setSelectedDates', payload: [day]})
+          onChange([day]);
+          return;
+        }
+
         let selectedDatesPayload = []
 
         /* A) First date is chosen - choose the date */
